@@ -1,5 +1,7 @@
 require 'capistrano/ext/multistage'
 
+set :default_shell, '/bin/bash -l'
+
 set :application, "timepants"
 set :repository,  "https://github.com/jurassic-c/timepants.git"
 
