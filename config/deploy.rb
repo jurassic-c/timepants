@@ -10,3 +10,5 @@ set :stages, ["staging", "production"]
 set :default_stage, "staging"
 
 set :use_sudo, false
+
+set :normalize_asset_timestamps, false
