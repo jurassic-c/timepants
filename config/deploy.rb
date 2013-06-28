@@ -1,4 +1,5 @@
 require 'capistrano/ext/multistage'
+require 'bundler/capistrano'
 
 set :default_shell, '/bin/bash -l'
 
@@ -15,12 +16,16 @@ set :use_sudo, false
 
 set :normalize_asset_timestamps, false
 
-namespace :bundle do
+namespace :deploy do
+	task :start, :roles => :app do
+		run "cd #{current_path}; rails server -d"
+	end
 
-  desc "run bundle install and ensure all gem requirements are met"
-  task :install do
-    run "cd #{current_path} && bundle install  --without=test"
-  end
+	task :stop, :roles => :app do
+	    run "cd #{current_path}; kill -9 $(cat tmp/pids/server.pid)"
+	end
 
+	task :restart, :roles => :app do
+		run "cd #{current_path}; kill -9 $(cat tmp/pids/server.pid); rails server -d"
+	end
 end
-before "deploy:restart", "bundle:install"
